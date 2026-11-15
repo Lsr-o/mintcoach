@@ -1,0 +1,5274 @@
+/* ============================================================================
+
+ * style.css —— AI 健身教练 · 移动优先「小清新」浅色主题
+ * 结构：变量 → 基础 → 布局 → 组件 → 页面模块 → 响应式
+ * ========================================================================== */
+
+:root {
+  --bg: #fdfcf8;
+  --bg-elevated: #ffffff;
+  --card: #ffffff;
+  --card-strong: #f2fbfa;
+  --line: rgba(78, 197, 193, 0.2);
+  --text: #2f3e46;
+  --muted: #8d9ba8;
+  --accent: #4ec5c1;
+  --accent-strong: #3fb0ac;
+  --accent-text: #ffffff;
+  --accent-2: #a8d8ea;
+  --peach: #ffd3a5;
+  --mint-soft: #eaf7f6;
+  --warn: #e8a45a;
+  --danger: #e77b7b;
+  --ok: #4ec5c1;
+  --info: #a8d8ea;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --shadow: 0 10px 28px rgba(47, 62, 70, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(180deg, #eaf7f6 0%, rgba(253, 252, 248, 0) 340px),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+.container {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ============================ 顶部导航 ============================ */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(253, 252, 248, 0.92);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding-top: env(safe-area-inset-top);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 8px;
+}
+
+.brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: var(--accent-text);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 0 1px rgba(212, 255, 77, 0.25), 0 8px 24px rgba(182, 241, 31, 0.25);
+}
+
+.brand-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.brand-sub {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.brand-badge {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.tabbar {
+  display: flex;
+  gap: 8px;
+  padding: 4px 12px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tab.is-active {
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  border-color: transparent;
+  font-weight: 600;
+  box-shadow: 0 6px 18px rgba(182, 241, 31, 0.2);
+}
+
+/* ============================ 页面容器 ============================ */
+main.container {
+  padding-top: 16px;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom));
+}
+
+.page {
+  display: none;
+  animation: fade 0.25s ease;
+}
+
+.page.is-active {
+  display: block;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================ 卡片与徽标 ============================ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.card-head h2,
+.card-head h3 {
+  margin: 0;
+  font-size: 16px;
+  letter-spacing: -0.1px;
+}
+
+.tag {
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid rgba(212, 255, 77, 0.35);
+  background: rgba(212, 255, 77, 0.08);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.badge-warn {
+  color: var(--warn);
+  border-color: rgba(255, 184, 77, 0.4);
+  background: rgba(255, 184, 77, 0.08);
+}
+
+.badge--up {
+  color: var(--accent);
+  border-color: rgba(212, 255, 77, 0.4);
+  background: rgba(212, 255, 77, 0.08);
+}
+
+.badge--down {
+  color: var(--info);
+  border-color: rgba(127, 178, 255, 0.4);
+  background: rgba(127, 178, 255, 0.08);
+}
+
+.badge--ok {
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0;
+  font-size: 13px;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
+.hint.center {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.meta-line {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 8px 0 0;
+  word-break: break-all;
+}
+
+.alert {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #ffc9c9;
+  background: rgba(255, 107, 107, 0.08);
+  border: 1px solid rgba(255, 107, 107, 0.25);
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 5px;
+  border-radius: 5px;
+  word-break: break-all;
+}
+
+/* ============================ 首页 Hero ============================ */
+.hero h2 {
+  margin: 10px 0 6px;
+  font-size: 22px;
+  letter-spacing: -0.3px;
+}
+
+.flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 12px;
+}
+
+.flow span {
+  padding: 4px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+
+.flow i {
+  color: var(--muted);
+  font-style: normal;
+}
+
+/* ============================ 表单 ============================ */
+.field {
+  margin-bottom: 14px;
+}
+
+.field > label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field output {
+  color: var(--accent);
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* textarea 保留原生外观，避免移动端无法聚焦或无法输入 */
+textarea {
+  -webkit-appearance: auto;
+  appearance: auto;
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
+}
+
+.chips + textarea {
+  margin-top: 10px;
+}
+
+select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(212, 255, 77, 0.5);
+  background: rgba(212, 255, 77, 0.05);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+.chip.is-active,
+.chip:has(input:checked) {
+  color: var(--accent-text);
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  border-color: transparent;
+}
+
+/* 训练感受：轻松 / 合适 / 太累 的选中配色 */
+.chip[data-feeling="easy"].is-active {
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+}
+
+.chip[data-feeling="ok"].is-active {
+  color: #0a1526;
+  background: linear-gradient(135deg, #8db9ff, #6a9dff);
+}
+
+.chip[data-feeling="tired"].is-active {
+  color: #2a0b0b;
+  background: linear-gradient(135deg, #ff9a9a, #ff6b6b);
+}
+
+/* 复盘统计卡片 */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.stat-item {
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  text-align: center;
+}
+
+.stat-item span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.stat-item b {
+  font-size: 17px;
+}
+
+.stat-item.is-easy b {
+  color: var(--ok);
+}
+
+.stat-item.is-tired b {
+  color: var(--danger);
+}
+
+.chip-check {
+  position: relative;
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip span {
+  pointer-events: none;
+}
+
+/* ============================ 按钮 ============================ */
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: transform 0.12s, opacity 0.18s, box-shadow 0.18s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+  color: var(--accent-text);
+  box-shadow: 0 10px 26px rgba(182, 241, 31, 0.25);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  border-color: var(--line);
+  font-weight: 600;
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.985);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+/* ============================ 结果区 ============================ */
+.result-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.result-head h2 {
+  font-size: 18px;
+}
+
+.empty {
+  text-align: center;
+  padding: 32px 16px;
+}
+
+.empty-title {
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+/* 训练日列表 */
+.day-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.day-item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+  font-size: 13px;
+}
+
+.day-item.is-train {
+  border-color: rgba(212, 255, 77, 0.18);
+  background: rgba(212, 255, 77, 0.05);
+}
+
+.day-item.is-rest {
+  opacity: 0.65;
+}
+
+.day-name {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.day-focus {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.day-meta {
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+/* 动作明细折叠 */
+.day-detail {
+  margin-bottom: 6px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.day-detail summary {
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 13px;
+  list-style: none;
+}
+
+.day-detail summary::-webkit-details-marker {
+  display: none;
+}
+
+.day-detail summary::before {
+  content: "+";
+  color: var(--accent);
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.day-detail[open] summary::before {
+  content: "−";
+}
+
+.exercise-list {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.exercise-list li {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 9px;
+}
+
+.ex-name {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.ex-spec {
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.ex-target {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ex-note {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--warn);
+}
+
+.mini-block {
+  margin-top: 12px;
+}
+
+.mini-block h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.dot-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 12.5px;
+  color: #c9d3df;
+  display: grid;
+  gap: 4px;
+}
+
+.dot-list li::marker {
+  color: var(--accent);
+}
+
+/* 营养卡片 */
+.kcal {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 4px 0 12px;
+}
+
+.kcal b {
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.kcal span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.macro-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.macro {
+  padding: 9px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 2px;
+  text-align: center;
+}
+
+.macro span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.macro b {
+  font-size: 14px;
+}
+
+.macro em {
+  font-style: normal;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.day-energy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.day-energy-item {
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(212, 255, 77, 0.06);
+  border: 1px solid rgba(212, 255, 77, 0.2);
+}
+
+.day-energy-item.is-rest {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--line);
+}
+
+.day-energy-label {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.day-energy-item b {
+  font-size: 15px;
+}
+
+.day-energy-note {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.meal-list {
+  list-style: none;
+  margin: 0 0 6px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.meal-list li {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.meal-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.meal-head span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.meal-foods {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #c9d3df;
+}
+
+/* ============================ 能力清单 ============================ */
+.checklist {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.checklist li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+}
+
+.checklist .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--danger);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.12);
+  flex: 0 0 auto;
+}
+
+.checklist li.is-on .dot {
+  background: var(--ok);
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.14);
+}
+
+.cap-state {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ============================ 复盘 ============================ */
+.score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 4px 0 12px;
+}
+
+.score {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.two-col {
+  display: grid;
+  gap: 10px;
+}
+
+.advice {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #d6dee8;
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+}
+
+/* ============================ 日历 ============================ */
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.calendar-head h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.cal-dow {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  padding: 4px 0;
+}
+
+.cal-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.cal-cell.is-blank {
+  background: transparent;
+  cursor: default;
+}
+
+.cal-cell.has-log {
+  background: rgba(212, 255, 77, 0.1);
+  border-color: rgba(212, 255, 77, 0.25);
+}
+
+.cal-cell.is-today {
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.log-dot {
+  position: absolute;
+  bottom: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ============================ 科普与答疑 ============================ */
+.article-list {
+  display: grid;
+  gap: 8px;
+}
+
+.article {
+  text-align: left;
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.article:hover {
+  border-color: rgba(212, 255, 77, 0.3);
+  background: rgba(212, 255, 77, 0.04);
+}
+
+.article-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.article-meta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.qa-answer {
+  margin-top: 12px;
+}
+
+.qa-result {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+}
+
+.qa-result p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: #d6dee8;
+}
+
+/* ============================ 骨架屏 ============================ */
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.05)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.3s infinite;
+  height: 12px;
+  margin-bottom: 10px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.w30 {
+  width: 30%;
+}
+
+.w40 {
+  width: 40%;
+}
+
+.w60 {
+  width: 60%;
+}
+
+.w80 {
+  width: 80%;
+}
+
+.w90 {
+  width: 90%;
+}
+
+/* ============================ Toast ============================ */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(22px + env(safe-area-inset-bottom));
+  transform: translate(-50%, 20px);
+  opacity: 0;
+  pointer-events: none;
+  max-width: min(88vw, 520px);
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: rgba(24, 28, 36, 0.96);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--text);
+  z-index: 60;
+  text-align: center;
+  transition: opacity 0.22s, transform 0.22s;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+}
+
+.toast.is-show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ============================ 打卡复盘 ============================ */
+.checkin-entry .card-head {
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.checkin-entry h2 {
+  margin: 0 0 2px;
+}
+
+.checkin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.checkin-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+}
+
+.checkin-date {
+  display: grid;
+  gap: 1px;
+  min-width: 48px;
+  padding: 5px 6px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.04);
+  text-align: center;
+}
+
+.checkin-date b {
+  font-size: 13px;
+}
+
+.checkin-date span {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.checkin-main {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.checkin-meta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.checkin-note {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #c9d3df;
+  overflow-wrap: anywhere;
+}
+
+.checkin-weight {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.badge--tired {
+  color: var(--danger);
+  border-color: rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.08);
+}
+
+/* 今日打卡弹层 */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+}
+
+.modal.is-open {
+  display: block;
+}
+
+.modal-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.modal-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 16px 16px calc(20px + env(safe-area-inset-bottom));
+  background: #12161d;
+  border-top: 1px solid var(--line);
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.5);
+  animation: sheet-up 0.22s ease;
+}
+
+@keyframes sheet-up {
+  from {
+    opacity: 0.5;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+@media (min-width: 680px) {
+  .modal-panel {
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    top: 50%;
+    width: min(560px, 92vw);
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    animation: modal-pop 0.2s ease;
+  }
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================ 训练日历详情 ============================ */
+.cal-cell.is-selected {
+  border-color: rgba(212, 255, 77, 0.55);
+  background: rgba(212, 255, 77, 0.08);
+}
+
+.check-mark {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* ============================ 健康科普文章 ============================ */
+.article-item {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.article-item summary {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 12px 32px 12px 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.article-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.article-item summary::after {
+  content: "+";
+  position: absolute;
+  right: 12px;
+  top: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.article-item[open] summary::after {
+  content: "−";
+}
+
+.article-body {
+  display: grid;
+  gap: 8px;
+  padding: 0 12px 12px;
+  font-size: 13px;
+  color: #c9d3df;
+}
+
+.article-body p {
+  margin: 0;
+}
+
+.article-body .hint {
+  color: var(--muted);
+}
+
+/* ============================ 日历详情：饮食与热量记录 ============================ */
+.diet-section {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.diet-log-form {
+  margin-top: 12px;
+}
+
+.meal-list.compact li {
+  padding: 8px 10px;
+}
+
+.meal-list.compact .meal-foods {
+  font-size: 11px;
+}
+
+.stat-item.is-over b {
+  color: var(--danger);
+}
+
+.stat-item.is-under b {
+  color: var(--info);
+}
+
+.diet-log-form .btn-secondary {
+  margin-top: 2px;
+}
+
+/* ============================ 饮食食物打卡 ============================ */
+.food-add-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.food-add-row select {
+  flex: 1 1 100%;
+}
+
+.food-add-row .food-name-input {
+  flex: 1 1 100%;
+}
+
+.food-add-row .food-grams-input {
+  flex: 1 1 90px;
+}
+
+.food-add-btn {
+  flex: 0 0 auto;
+  width: auto;
+  padding: 11px 18px;
+  margin: 0;
+}
+
+@media (min-width: 680px) {
+  .food-add-row select {
+    flex: 1 1 55%;
+  }
+
+  .food-add-row .food-name-input {
+    flex: 1 1 55%;
+  }
+}
+
+.food-list {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.food-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 8px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+}
+
+.food-main {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.food-main span {
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.food-macros {
+  grid-column: 1 / 2;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.food-remove {
+  grid-row: 1 / 3;
+  grid-column: 2 / 3;
+  align-self: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.diet-total {
+  margin: 6px 0 10px;
+}
+
+/* 拍照 / 照片预览 */
+.photo-block {
+  margin-bottom: 12px;
+}
+
+.photo-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(212, 255, 77, 0.35);
+  background: rgba(212, 255, 77, 0.04);
+  color: var(--accent);
+  font-size: 13px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.photo-icon {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.photo-preview {
+  position: relative;
+  margin-top: 10px;
+}
+
+.photo-preview img {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+
+.photo-remove {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+/* ---- 饮食记录：搜索列表 ---- */
+.food-search-results {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.food-search-results:empty {
+  display: none;
+}
+
+.food-search-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.food-search-item:hover,
+.food-search-item:focus-visible {
+  border-color: var(--accent);
+}
+
+.food-search-item.is-active {
+  border-color: var(--accent);
+  background: rgba(212, 255, 77, 0.1);
+}
+
+.food-search-item em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.food-search-empty {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.food-picked {
+  flex: 1 1 100%;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.food-picked.is-active {
+  color: var(--accent);
+}
+
+/* ---- 饮食记录：今日目标对照与提醒 ---- */
+.intake-status {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.intake-status:empty {
+  display: none;
+}
+
+.intake-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.intake-row > span:first-child {
+  color: var(--muted);
+}
+
+.intake-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  overflow: hidden;
+}
+
+.intake-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.intake-bar.is-near i {
+  background: #f5c451;
+}
+
+.intake-bar.is-over i {
+  background: #ff6b6b;
+}
+
+.intake-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.intake-alerts {
+  display: grid;
+  gap: 6px;
+}
+
+.intake-alert {
+  margin: 0;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  border: 1px solid rgba(245, 196, 81, 0.35);
+  background: rgba(245, 196, 81, 0.1);
+  color: #f5c451;
+}
+
+.intake-alert.is-over {
+  border-color: rgba(255, 107, 107, 0.4);
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff8a8a;
+}
+
+.intake-tip {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---- 饮食记录：草稿项内可编辑克数 ---- */
+.food-grams-edit {
+  width: 62px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-size: 12px;
+  text-align: right;
+}
+
+/* ---- 饮食记录：历史（配图与食物列表一起显示） ---- */
+.diet-history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.diet-history-item {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.diet-history-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.diet-history-head b {
+  font-size: 13px;
+}
+
+.diet-history-head span {
+  font-size: 12px;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.diet-history-macros,
+.diet-history-foods {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.diet-history-photo {
+  display: block;
+  width: 100%;
+  max-height: 180px;
+  margin-top: 8px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+/* ---- 空状态引导：未生成计划时的统一提示 ---- */
+.empty-guide {
+  display: grid;
+  gap: 10px;
+  padding: 4px 0 2px;
+}
+
+.empty-guide-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.empty-guide .btn-secondary {
+  justify-self: start;
+  width: auto;
+  margin: 0;
+}
+
+/* ---- 首次使用引导弹层 ---- */
+.intro-steps {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.intro-steps li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.intro-index {
+  flex: 0 0 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(212, 255, 77, 0.12);
+  color: var(--accent);
+  font-size: 13px;
+}
+
+.intro-steps b {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+.intro-steps p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ---- 关于页 ---- */
+.about-team {
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.about-team b {
+  color: var(--accent);
+}
+
+.about-list,
+.about-steps {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.about-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.about-list li {
+  display: grid;
+  gap: 2px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.about-list b {
+  color: var(--text);
+  font-size: 13px;
+}
+
+.about-steps li {
+  line-height: 1.55;
+}
+
+.about-steps b {
+  color: var(--text);
+}
+
+.about-disclaimer {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ============================ 页脚 ============================ */
+.footer {
+  padding: 20px 16px calc(28px + env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.footer p {
+  margin: 4px 0;
+}
+
+/* ============================ 姿势评测 · 实时关键点 ============================ */
+.posture-card .muted {
+  margin-bottom: 12px;
+}
+
+/* 动作选择：小屏可横向滚动 */
+.exercise-picker {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.exercise-picker::-webkit-scrollbar {
+  display: none;
+}
+
+.exercise-picker .chip {
+  flex: 0 0 auto;
+}
+
+.posture-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #05070a;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.posture-stage video,
+.posture-stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.posture-stage video {
+  z-index: 1;
+}
+
+.posture-stage canvas {
+  z-index: 2;
+  pointer-events: none;
+}
+
+.posture-overlay {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.posture-badge,
+.posture-count {
+  padding: 4px 9px;
+  white-space: nowrap;
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(5, 7, 10, 0.72);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.posture-badge.is-active {
+  color: var(--accent);
+  border-color: rgba(212, 255, 77, 0.45);
+}
+
+.posture-badge.is-error {
+  color: var(--danger);
+  border-color: rgba(255, 107, 107, 0.45);
+}
+
+.posture-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  background: rgba(5, 7, 10, 0.55);
+}
+
+.posture-placeholder.is-hidden {
+  display: none;
+}
+
+/* 纠正弹窗：固定屏幕左上角的小窗，不遮挡训练主体 */
+.posture-alert {
+  position: fixed;
+  left: 12px;
+  top: 12px;
+  z-index: 80;
+  width: 140px;
+  height: 170px;
+  padding: 0;
+  background: transparent;
+}
+
+.posture-alert[hidden] {
+  display: none;
+}
+
+.posture-alert-card {
+  position: relative;
+  width: 140px;
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(18, 22, 29, 0.96);
+  border: 1px solid rgba(212, 255, 77, 0.35);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  animation: alert-pop 0.18s ease;
+}
+
+.posture-alert-canvas {
+  display: block;
+  width: 120px;
+  height: 150px;
+  margin: 0;
+  border-radius: 8px;
+  background: rgba(5, 7, 10, 0.55);
+}
+
+.posture-alert-card p {
+  width: 100%;
+  margin: 0;
+  padding: 0 2px;
+  font-size: 10px;
+  line-height: 1.3;
+  color: var(--text);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.posture-alert-close {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  width: 18px;
+  height: 18px;
+  font-size: 13px;
+  border-radius: 6px;
+  opacity: 0.8;
+}
+
+@keyframes alert-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.posture-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.posture-actions .btn-primary,
+.posture-actions .btn-secondary {
+  margin-top: 0;
+}
+
+.posture-card .checklist {
+  margin-top: 14px;
+}
+
+/* ============================ 训练模式切换 ============================ */
+.mode-switch {
+  display: flex;
+  gap: 8px;
+}
+
+.mode-switch .chip {
+  flex: 1;
+  justify-content: center;
+}
+
+/* ============================ 今日训练流程 ============================ */
+.trainer-panel {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.trainer-status {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.trainer-status strong {
+  color: var(--accent);
+}
+
+.trainer-status.is-rest {
+  color: var(--warn);
+  border-color: rgba(255, 184, 77, 0.3);
+}
+
+.trainer-actions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.trainer-actions .btn-primary,
+.trainer-actions .btn-secondary {
+  margin-top: 0;
+}
+
+.trainer-progress {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+}
+
+.trainer-progress[hidden] {
+  display: none;
+}
+
+.trainer-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.trainer-row b {
+  max-width: 62%;
+  font-size: 13px;
+  color: var(--text);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.trainer-row b.is-reps {
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.trainer-row b.is-rest {
+  color: var(--warn);
+  font-size: 16px;
+}
+
+#trainer-complete-set {
+  margin-top: 8px;
+}
+
+@media (min-width: 680px) {
+  .trainer-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .posture-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ============================ 响应式 ============================ */
+@media (min-width: 680px) {
+  body {
+    font-size: 15.5px;
+  }
+
+  .result-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero h2 {
+    font-size: 26px;
+  }
+}
+/* ============================================================================
+ * 小清新主题覆盖层
+ * 说明：保留既有布局与结构，仅统一浅色配色、圆角、阴影与间距。
+ * ========================================================================== */
+
+/* ---- 顶部品牌与 Tab ---- */
+.brand-logo {
+  background: linear-gradient(135deg, #4ec5c1, #a8d8ea);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(78, 197, 193, 0.28);
+}
+
+.brand-badge {
+  background: #fff6ec;
+  border-color: rgba(255, 211, 165, 0.9);
+  color: #b98149;
+}
+
+.tab {
+  background: #fff;
+  border-color: rgba(78, 197, 193, 0.18);
+  color: var(--muted);
+  box-shadow: 0 2px 6px rgba(47, 62, 70, 0.04);
+}
+
+.tab:hover {
+  color: var(--accent-strong);
+  border-color: rgba(78, 197, 193, 0.45);
+}
+
+.tab.is-active {
+  background: linear-gradient(135deg, #4ec5c1, #3fb0ac);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 6px 14px rgba(78, 197, 193, 0.32);
+}
+
+/* ---- 卡片 ---- */
+.card {
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(47, 62, 70, 0.06);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+
+/* ---- 首页 Hero：薄荷绿 → 浅蓝柔和渐变 ---- */
+.hero {
+  background: linear-gradient(135deg, #e6f8f6 0%, #f3fbfa 45%, #eaf4fb 100%);
+  border-color: rgba(78, 197, 193, 0.22);
+  box-shadow: 0 10px 26px rgba(78, 197, 193, 0.12);
+}
+
+.hero h2 {
+  color: #24424a;
+}
+
+.hero .flow span {
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  color: #3f7570;
+}
+
+/* ---- 标签与徽章 ---- */
+.tag {
+  background: #fff5ea;
+  border: 1px solid rgba(255, 211, 165, 0.85);
+  color: #b98149;
+}
+
+.badge {
+  background: #eef7fc;
+  border: 1px solid rgba(168, 216, 234, 0.9);
+  color: #4b87a3;
+}
+
+/* ---- 按钮：主色底白字胶囊 ---- */
+.btn-primary {
+  background: linear-gradient(135deg, #4ec5c1, #3fb0ac);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 8px 18px rgba(78, 197, 193, 0.3);
+}
+
+.btn-secondary {
+  background: #effaf9;
+  color: #2f8e8a;
+  border: 1px solid rgba(78, 197, 193, 0.35);
+  border-radius: 999px;
+}
+
+/* ---- 输入控件：浅底圆角 + 聚焦薄荷描边 ---- */
+input[type="text"],
+input[type="number"],
+input[type="search"],
+select,
+textarea {
+  background: #fbfefd;
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  border-radius: 14px;
+  color: var(--text);
+  padding: 11px 14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4ec5c1;
+  box-shadow: 0 0 0 3px rgba(78, 197, 193, 0.16);
+  background: #fff;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #b3c0cb;
+}
+
+/* ---- 选项胶囊 ---- */
+.chip {
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  color: var(--muted);
+  border-radius: 999px;
+}
+
+.chip.is-active {
+  background: linear-gradient(135deg, #4ec5c1, #3fb0ac);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(78, 197, 193, 0.26);
+}
+
+/* ---- 训练与计划 ---- */
+.day-item {
+  background: #effaf9;
+  border: 1px solid rgba(78, 197, 193, 0.2);
+  border-radius: 16px;
+}
+
+.day-item.is-rest {
+  background: #f6f8fb;
+  border-color: rgba(168, 216, 234, 0.6);
+}
+
+.exercise-list li {
+  background: #fff;
+  border: 1px solid rgba(47, 62, 70, 0.08);
+  border-radius: 14px;
+}
+
+/* ---- 营养素与统计 ---- */
+.macro {
+  background: #effaf9;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  border-radius: 14px;
+}
+
+.macro b {
+  color: #2f8e8a;
+}
+
+.stat-item {
+  background: #f6fbfa;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  border-radius: 14px;
+}
+
+/* ---- 饮食记录 ---- */
+.food-item {
+  background: #fff;
+  border: 1px solid rgba(47, 62, 70, 0.08);
+  border-radius: 14px;
+}
+
+.food-search-item {
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.18);
+  border-radius: 14px;
+  color: var(--text);
+}
+
+.food-search-item.is-active {
+  background: #eafaf8;
+  border-color: #4ec5c1;
+}
+
+.food-grams-edit {
+  background: #fbfefd;
+  border-color: rgba(78, 197, 193, 0.25);
+  color: var(--text);
+}
+
+.photo-label {
+  background: #f7fdfc;
+  border: 1.5px dashed rgba(78, 197, 193, 0.4);
+  border-radius: 16px;
+  color: #4b8f8a;
+}
+
+.diet-history-item {
+  background: #fff;
+  border: 1px solid rgba(47, 62, 70, 0.08);
+  border-radius: 14px;
+}
+
+.intake-bar {
+  background: #edf6f5;
+}
+
+.intake-alert {
+  background: #fff8ee;
+  border-color: rgba(255, 211, 165, 0.8);
+  color: #b98149;
+}
+
+.intake-alert.is-over {
+  background: #fdf1f1;
+  border-color: rgba(231, 123, 123, 0.4);
+  color: #c25f5f;
+}
+
+/* ---- 弹层与提示 ---- */
+.modal-panel {
+  background: #fff;
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -8px 30px rgba(47, 62, 70, 0.14);
+}
+
+.modal-mask {
+  background: rgba(47, 62, 70, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.toast {
+  background: rgba(47, 62, 70, 0.92);
+  color: #fff;
+  border-radius: 999px;
+}
+
+/* ---- 空状态与引导 ---- */
+.empty {
+  background: #f8fcfb;
+  border: 1px dashed rgba(78, 197, 193, 0.35);
+  border-radius: 18px;
+}
+
+.empty-title {
+  color: #3f7570;
+}
+
+.empty-guide {
+  background: #f7fdfc;
+  border: 1px dashed rgba(78, 197, 193, 0.35);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+
+.empty-guide-title {
+  color: #2f8e8a;
+}
+
+/* ---- 日历与科普 ---- */
+.article-item {
+  background: #fff;
+  border: 1px solid rgba(47, 62, 70, 0.08);
+  border-radius: 14px;
+}
+
+/* ---- 移动端细节 ---- */
+@media (max-width: 420px) {
+  .card {
+    padding: 15px;
+    border-radius: 18px;
+  }
+
+  .hero {
+    padding: 20px 16px;
+  }
+
+  .brand-sub {
+    font-size: 10px;
+  }
+}
+/* ============================================================================
+ * 个人主页与多用户
+ * ========================================================================== */
+
+/* ---- 右上角用户入口 ---- */
+.user-entry {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(78, 197, 193, 0.3);
+  background: #fff;
+  color: var(--text);
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(47, 62, 70, 0.05);
+}
+
+.user-entry-avatar {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #eafaf8;
+  font-size: 13px;
+}
+
+.user-entry-name {
+  max-width: 84px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- 用户切换弹层 ---- */
+.user-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(78, 197, 193, 0.2);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.user-item.is-active {
+  border-color: #4ec5c1;
+  background: #eafaf8;
+}
+
+.user-item-avatar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: #effaf9;
+  font-size: 17px;
+}
+
+.user-item-info {
+  display: grid;
+  gap: 2px;
+}
+
+.user-item-info b {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.user-item-info em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.user-item-del {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 14px;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+.user-item-del:hover {
+  opacity: 1;
+  background: #ffecec;
+}
+
+/* ---- 个人主页 Hero ---- */
+.profile-hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #e6f8f6 0%, #f3fbfa 50%, #eaf4fb 100%);
+  border-color: rgba(78, 197, 193, 0.22);
+  overflow: hidden;
+}
+
+.profile-hello {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #24424a;
+}
+
+.avatar-stage {
+  width: 116px;
+  height: 150px;
+  display: grid;
+  place-items: end center;
+}
+
+/* 基础样式只负责尺寸与配色，动画一律由状态类控制 */
+.avatar-svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--avatar-color, #4ec5c1);
+}
+
+.avatar-head {
+  fill: var(--avatar-color, #4ec5c1);
+}
+
+.avatar-eye {
+  fill: #2f3e46;
+}
+
+.avatar-smile {
+  fill: none;
+  stroke: #2f3e46;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* 手臂默认不摆动，只在「开心 / 合适」等状态类里显式启用 */
+.avatar-arm {
+  transform-box: fill-box;
+  transform-origin: 50% 6%;
+}
+
+.avatar-arm--right {
+  animation-direction: reverse;
+}
+
+@keyframes avatar-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+
+@keyframes avatar-bounce {
+  0%, 100% { transform: translateY(0); }
+  35% { transform: translateY(-12px); }
+  55% { transform: translateY(-4px); }
+}
+
+
+@keyframes avatar-cheer {
+  0%, 100% { transform: rotate(-16deg); }
+  50% { transform: rotate(14deg); }
+}
+
+@keyframes avatar-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.035); }
+}
+
+@keyframes avatar-sparkle-twinkle {
+  0%, 100% { opacity: 0.35; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+@keyframes avatar-sweat-drop {
+  0% { opacity: 0; transform: translateY(-4px); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+
+/* 移动端：状态气泡字号收紧 */
+@media (max-width: 420px) {
+  .avatar-bubble {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+}
+/* ============================================================================
+ * 个人主页入口与四状态运动伙伴（补全被回滚截断的样式）
+ * ========================================================================== */
+
+/* ---- 问候行 ---- */
+.profile-hello-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+/* ---- 状态气泡 ---- */
+.avatar-bubble {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.25);
+  color: #2f6f6b;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(47, 62, 70, 0.06);
+}
+
+/* ---- 表情与性别装饰 ---- */
+.avatar-hair {
+  fill: rgba(47, 62, 70, 0.22);
+}
+
+.avatar-bow {
+  fill: #ff9fb2;
+}
+
+.avatar-blush {
+  fill: #ffb3c1;
+  opacity: 0.75;
+}
+
+.avatar-eye-curve,
+.avatar-mouth {
+  fill: none;
+  stroke: #2f3e46;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.avatar-sweat {
+  fill: #a8d8ea;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: avatar-sweat-drop 1.8s ease-in-out infinite;
+}
+
+.avatar-sparkle {
+  font-size: 14px;
+  fill: #f6c453;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: avatar-sparkle-twinkle 1.6s ease-in-out infinite;
+}
+
+.avatar-sparkle:nth-child(2) {
+  animation-delay: 0.45s;
+}
+
+.avatar-sparkle:nth-child(3) {
+  animation-delay: 0.9s;
+}
+
+/* ---- 四种状态：动画只由状态类控制 ---- */
+/* 待机：只做整体轻跳，双臂静止 */
+.avatar-svg--idle {
+  animation: avatar-float 3s ease-in-out infinite;
+}
+
+.avatar-svg--idle .avatar-arm {
+  animation: none;
+}
+
+/* 开心：蹦跳 + 双臂轻摆 */
+.avatar-svg--happy {
+  animation: avatar-bounce 1.3s ease-in-out infinite;
+}
+
+.avatar-svg--happy .avatar-arm {
+  transform-box: fill-box;
+  transform-origin: 50% 6%;
+  animation: avatar-cheer 1.1s ease-in-out infinite;
+}
+
+/* 合适：只做轻微浮动，双臂完全静止（不做招手/比赞） */
+.avatar-svg--ok {
+  animation: avatar-float 3.4s ease-in-out infinite;
+}
+
+.avatar-svg--ok .avatar-arm {
+  animation: none;
+  transform: none;
+}
+
+/* 太累：呼吸起伏 + 双臂静止 */
+.avatar-svg--tired {
+  animation: avatar-breathe 2.6s ease-in-out infinite;
+}
+
+.avatar-svg--tired .avatar-arm {
+  animation: none;
+}
+/* ============================================================================
+ * 个人主页：身材信息卡与快捷入口（补回被回滚截断的样式）
+ * ========================================================================== */
+
+/* ---- 身材信息：两列小卡片 ---- */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.profile-stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: #f6fbfa;
+  border: 1px solid rgba(78, 197, 193, 0.14);
+  font-size: 12px;
+}
+
+.profile-stat span {
+  color: var(--muted);
+  /* 标签文字保持横排，不被输入框挤成竖排 */
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.profile-stat b {
+  color: #2f8e8a;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ---- 快捷入口：2×2 圆角卡片 ---- */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.quick-card {
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  padding: 16px 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(78, 197, 193, 0.2);
+  background: #fff;
+  color: var(--text);
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(47, 62, 70, 0.05);
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+
+.quick-card span {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.quick-card:hover {
+  box-shadow: 0 6px 18px rgba(47, 62, 70, 0.08);
+}
+
+.quick-card:active {
+  transform: scale(0.97);
+}
+
+/* ---- 各页面顶部「为 X 定制」标签 ---- */
+.page-user-tag {
+  margin: 0 0 12px;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: #eafaf8;
+  border: 1px solid rgba(78, 197, 193, 0.25);
+  color: #2f8e8a;
+  font-size: 12px;
+}
+
+@media (max-width: 420px) {
+  .profile-stat {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .quick-card {
+    padding: 14px 8px;
+    font-size: 12px;
+  }
+
+  .quick-card span {
+    font-size: 20px;
+  }
+}
+/* ============================================================================
+ * 健康科普：今日文章卡片 + 健康小测试
+ * ========================================================================== */
+
+.article-card {
+  border-radius: 16px;
+  border: 1px solid rgba(78, 197, 193, 0.18);
+  background: #f8fdfc;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.article-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.article-emoji {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: #eafaf8;
+  font-size: 24px;
+}
+
+.article-title-group h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.article-meta {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.article-points {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.article-tip {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff8ee;
+  border: 1px solid rgba(255, 211, 165, 0.8);
+  color: #b98149;
+  font-size: 12px;
+}
+
+#shuffle-article {
+  width: 100%;
+  margin-top: 2px;
+}
+
+/* ---- 健康小测试 ---- */
+.quiz-question {
+  border: 1px solid rgba(78, 197, 193, 0.14);
+  border-radius: 14px;
+  padding: 12px 14px 10px;
+  margin: 0 0 10px;
+  background: #fafefd;
+}
+
+.quiz-question legend {
+  padding: 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.quiz-option:hover {
+  border-color: var(--accent);
+}
+
+.quiz-option input {
+  accent-color: #4ec5c1;
+}
+
+#quiz-submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.quiz-result {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: #eafaf8;
+  border: 1px solid rgba(78, 197, 193, 0.3);
+  text-align: center;
+}
+
+.quiz-score {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2f8e8a;
+}
+
+.quiz-comment {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+/* ---- 小测试：引导语、题目进度与再来一次 ---- */
+.quiz-lead {
+  margin: 4px 0 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eafaf8, #eef7fc);
+  border: 1px solid rgba(78, 197, 193, 0.25);
+  color: #2f6f6b;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+#quiz-start,
+#quiz-next {
+  width: 100%;
+}
+
+.quiz-progress {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+#quiz-retry {
+  width: 100%;
+  margin-top: 12px;
+}
+/* ---- 小测试：答后解析、选项对错标记与错题复习 ---- */
+.quiz-option.is-correct {
+  border-color: #4ec5c1;
+  background: #eafaf8;
+}
+
+.quiz-option.is-wrong {
+  border-color: #e77b7b;
+  background: #fdf1f1;
+}
+
+.quiz-feedback {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eef9f8;
+  border: 1px solid rgba(78, 197, 193, 0.3);
+}
+
+.quiz-feedback.is-wrong {
+  background: #fff6f4;
+  border-color: rgba(231, 123, 123, 0.35);
+}
+
+.feedback-title {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2f8e8a;
+}
+
+.quiz-feedback.is-wrong .feedback-title {
+  color: #c25f5f;
+}
+
+.feedback-text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+.quiz-review {
+  margin-top: 14px;
+  text-align: left;
+}
+
+.quiz-review h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.review-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.review-item {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(231, 123, 123, 0.25);
+}
+
+.review-question {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.review-answer {
+  margin: 0 0 4px;
+  font-size: 12px;
+  color: #c25f5f;
+}
+
+.review-explain {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.quiz-perfect {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #eafaf8;
+  color: #2f8e8a;
+  font-size: 13px;
+  text-align: center;
+}
+/* ============================================================================
+ * 首页聚合导航：二级页返回 + 聚合卡片 + 迷你日历
+ * ========================================================================== */
+
+/* ---- 二级页返回按钮 ---- */
+.page-topbar {
+  margin-bottom: 12px;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(78, 197, 193, 0.28);
+  background: #fff;
+  color: #2f8e8a;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(47, 62, 70, 0.05);
+}
+
+.back-btn:active {
+  transform: scale(0.97);
+}
+
+/* 训练模式沉浸式：左上角小圆返回，不遮挡训练画面 */
+.back-btn--float {
+  position: fixed;
+  left: 12px;
+  top: calc(12px + env(safe-area-inset-top));
+  z-index: 40;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgba(47, 62, 70, 0.15);
+}
+
+/* ---- 首页聚合卡片 ---- */
+.dash-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.dash-card {
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  border-radius: 18px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 22px rgba(47, 62, 70, 0.06);
+}
+
+.dash-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.dash-emoji {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #eafaf8;
+  font-size: 16px;
+}
+
+.dash-head b {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.dash-text {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.dash-hint {
+  margin: 0 0 8px;
+  font-size: 11.5px;
+  color: #2f8e8a;
+}
+
+.dash-btn {
+  width: 100%;
+  min-height: 42px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.dash-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* ---- 今日饮食进度条 ---- */
+.diet-progress {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: #edf6f5;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.diet-progress i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4ec5c1, #3fb0ac);
+  transition: width 0.3s ease;
+}
+
+/* ---- 迷你日历 ---- */
+.mini-calendar {
+  margin: 6px 0 10px;
+}
+
+.mini-week,
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  text-align: center;
+}
+
+.mini-week span {
+  font-size: 10px;
+  color: var(--muted);
+  padding: 2px 0;
+}
+
+.mini-day {
+  position: relative;
+  font-size: 11px;
+  color: var(--text);
+  padding: 4px 0;
+  border-radius: 8px;
+}
+
+.mini-day.is-empty {
+  visibility: hidden;
+}
+
+.mini-day.is-today {
+  background: #eafaf8;
+  color: #2f8e8a;
+  font-weight: 700;
+}
+
+.mini-day.has-checkin::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 50%;
+  background: #4ec5c1;
+}
+
+/* ---- 关于入口 ---- */
+.about-link {
+  display: block;
+  width: 100%;
+  margin: 16px 0 4px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px dashed rgba(78, 197, 193, 0.3);
+  background: #f8fdfc;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ---- 移动端：卡片紧凑，尽量一屏看完核心内容 ---- */
+@media (max-width: 420px) {
+  .dash-list {
+    gap: 10px;
+  }
+
+  .dash-card {
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+
+  .dash-text {
+    font-size: 12px;
+    -webkit-line-clamp: 2;
+  }
+
+  .dash-btn {
+    min-height: 44px;
+  }
+
+  .mini-day {
+    padding: 3px 0;
+    font-size: 10.5px;
+  }
+}
+/* ============================================================================
+ * 今日闭环：首页进度条 / 复盘横幅 / 训练完成弹层
+ * ========================================================================== */
+
+/* ---- 首页今日闭环进度条 ---- */
+.home-progress {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+}
+
+.progress-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.progress-head b {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.progress-head span {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.progress-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+/* 未完成置灰，完成态用薄荷绿 */
+.progress-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 4px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  background: #f8fbfa;
+  color: #b6c2cb;
+}
+
+.progress-step i {
+  font-style: normal;
+  font-size: 12px;
+  filter: grayscale(1);
+  opacity: 0.7;
+}
+
+.progress-step.is-done {
+  background: #eafaf8;
+  border-color: rgba(78, 197, 193, 0.45);
+  color: #2f8e8a;
+  font-weight: 600;
+}
+
+.progress-step.is-done i {
+  filter: none;
+  opacity: 1;
+}
+
+.progress-step.is-pending {
+  color: #aab6bf;
+}
+
+.progress-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #edf6f5;
+  overflow: hidden;
+}
+
+.progress-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4ec5c1, #a8d8ea);
+  transition: width 0.3s ease;
+}
+
+/* ---- 复盘页今日闭环横幅 ---- */
+.review-complete {
+  margin: 0 0 12px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #eafaf8, #eef7fc);
+  border: 1px solid rgba(78, 197, 193, 0.35);
+  color: #2f8e8a;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 6px 16px rgba(78, 197, 193, 0.12);
+}
+
+/* ---- 训练完成弹层 ---- */
+.complete-panel {
+  text-align: center;
+}
+
+.complete-text {
+  margin: 4px 0 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.complete-panel .btn-primary,
+.complete-panel .btn-secondary {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 420px) {
+  .progress-step {
+    font-size: 10.5px;
+    padding: 5px 2px;
+  }
+
+  .home-progress {
+    padding: 12px 14px;
+  }
+}
+/* ============================================================================
+ * 复盘增强：周统计 / 柱状图 / 里程碑徽章 / 温暖话术
+ * ========================================================================== */
+
+/* 简易柱状图：每天训练量 */
+.week-chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: end;
+  gap: 6px;
+  padding: 10px 6px 4px;
+  border-radius: 14px;
+  background: #f8fdfc;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+  margin-bottom: 10px;
+}
+
+.chart-col {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+}
+
+.chart-value {
+  font-size: 10px;
+  color: var(--muted);
+  min-height: 12px;
+}
+
+.chart-bar {
+  display: block;
+  width: 14px;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, #4ec5c1, #a8d8ea);
+  min-height: 6px;
+}
+
+.chart-label {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* 里程碑成就徽章：未点亮置灰，点亮为杏色 */
+.achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+
+.achievement {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px dashed rgba(141, 155, 168, 0.4);
+  background: #f7f9fa;
+  color: #b3c0cb;
+  font-size: 11.5px;
+  filter: grayscale(1);
+}
+
+.achievement b {
+  font-size: 13px;
+}
+
+.achievement.is-earned {
+  border-style: solid;
+  border-color: rgba(255, 211, 165, 0.9);
+  background: #fff7ec;
+  color: #b98149;
+  filter: none;
+  box-shadow: 0 4px 12px rgba(255, 211, 165, 0.25);
+}
+
+/* 有温度的鼓励话术 */
+.encouragement {
+  margin: 8px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #eafaf8, #eef7fc);
+  border: 1px solid rgba(78, 197, 193, 0.28);
+  color: #2f6f6b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+/* ============================================================================
+ * 首页健康科普全文专区：舒适阅读排版
+ * ========================================================================== */
+
+.home-article-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px dashed rgba(78, 197, 193, 0.22);
+}
+
+.home-article-head h3 {
+  margin: 0 0 3px;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.home-article-body {
+  display: grid;
+  gap: 12px;
+}
+
+.article-section {
+  display: grid;
+  gap: 4px;
+}
+
+.article-section h4 {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #2f8e8a;
+  letter-spacing: 0.2px;
+}
+
+/* 正文：行距与段落间距放宽，长文更好读 */
+.article-section p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.85;
+  color: var(--text);
+}
+
+.home-article-body .article-tip {
+  margin: 2px 0 0;
+}
+
+@media (max-width: 420px) {
+  .home-article-head {
+    gap: 10px;
+  }
+
+  .article-section p {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+}
+
+/* ============================================================================
+ * 身材信息实时编辑
+ * ========================================================================== */
+
+.profile-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  max-width: 96px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(78, 197, 193, 0.3);
+  background: #fff;
+  color: #2f8e8a;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+}
+
+select.profile-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  max-width: 108px;
+  text-align: left;
+}
+
+.profile-input:focus {
+  border-color: #4ec5c1;
+  box-shadow: 0 0 0 3px rgba(78, 197, 193, 0.16);
+  outline: none;
+}
+
+/* 器械区占满整行 */
+.profile-stat--wide {
+  grid-column: 1 / -1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.profile-equipment {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.profile-equip-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(78, 197, 193, 0.25);
+  background: #fff;
+  color: var(--muted);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.profile-equip-chip.is-active {
+  background: #eafaf8;
+  border-color: #4ec5c1;
+  color: #2f8e8a;
+  font-weight: 600;
+}
+
+@media (max-width: 420px) {
+  .profile-input {
+    max-width: 84px;
+    font-size: 11.5px;
+  }
+
+  select.profile-input {
+    max-width: 92px;
+  }
+}
+/* ============================================================================
+ * 分餐记录 / 喝水 / 下一餐建议 / 每日饮食报告
+ * ========================================================================== */
+
+/* 餐次切换 */
+.meal-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+}
+
+.meal-tab {
+  flex: 1 1 auto;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(78, 197, 193, 0.25);
+  background: #fff;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.meal-tab.is-active {
+  background: linear-gradient(135deg, #4ec5c1, #3fb0ac);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 餐次分区 */
+.meal-group {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f8fdfc;
+  border: 1px solid rgba(78, 197, 193, 0.14);
+}
+
+.meal-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #2f8e8a;
+}
+
+.meal-title em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.meal-empty {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* 喝水记录 */
+.water-card {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #eef7fc, #f8fdfc);
+  border: 1px solid rgba(168, 216, 234, 0.6);
+}
+
+.water-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.water-head span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.water-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: #e3f1f7;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.water-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #a8d8ea, #4ec5c1);
+  transition: width 0.3s ease;
+}
+
+.water-btn {
+  width: 100%;
+  min-height: 40px;
+}
+
+/* 首页喝水进度用浅蓝区分热量 */
+.diet-progress--water i {
+  background: linear-gradient(90deg, #a8d8ea, #7fc6e8);
+}
+
+/* 下一餐建议 */
+.meal-suggestion-card .suggestion-text {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff8ee;
+  border: 1px solid rgba(255, 211, 165, 0.85);
+  color: #b98149;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+/* 每日饮食报告 */
+#generate-diet-report {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.report-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #f8fdfc;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+}
+
+.report-row {
+  display: grid;
+  grid-template-columns: 76px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.report-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: #edf6f5;
+  overflow: hidden;
+}
+
+.report-bar i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #4ec5c1, #a8d8ea);
+}
+
+.report-row em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.report-line,
+.report-comment {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.report-comment {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #eafaf8;
+  color: #2f6f6b;
+}
+
+.report-history {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.report-history-item {
+  display: grid;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.report-history-item b {
+  font-size: 11px;
+  color: var(--text);
+}
+
+.report-history-item em {
+  font-style: normal;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+/* ============================================================================
+ * 训练前安全提示与免责小字
+ * ========================================================================== */
+
+.safety-panel {
+  text-align: left;
+}
+
+.safety-list {
+  list-style: none;
+  margin: 4px 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.safety-list li {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8fdfc;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+}
+
+.safety-list b {
+  font-size: 13px;
+  color: #2f8e8a;
+}
+
+.safety-list span {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.safety-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 14px;
+  font-size: 12.5px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.safety-remember input {
+  width: 16px;
+  height: 16px;
+  accent-color: #4ec5c1;
+}
+
+.safety-panel .btn-primary,
+.safety-panel .btn-secondary {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* 免责声明小字 */
+.disclaimer-note {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #aab6bf;
+  text-align: center;
+}
+/* ============================================================================
+ * 饮食记录：单行紧凑食物条目
+ * ========================================================================== */
+
+.food-list {
+  gap: 4px;
+  margin: 0 0 6px;
+}
+
+/* 每条记录一行：emoji + 名称 + 分量 + 热量 + 删除 */
+.food-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 9px;
+  background: #fff;
+  border: 1px solid rgba(47, 62, 70, 0.07);
+  font-size: 12px;
+}
+
+/* 兼容旧结构：若外部回滚后仍存在 food-main / food-macros，也压成一行 */
+.food-item .food-main,
+.food-item .food-macros {
+  display: contents;
+}
+
+.food-emoji {
+  flex: 0 0 auto;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.food-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.food-item .food-grams-edit {
+  flex: 0 0 46px;
+  width: 46px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  border: 1px solid rgba(78, 197, 193, 0.25);
+  background: #fbfefd;
+  color: #2f8e8a;
+  font-size: 11.5px;
+  text-align: right;
+}
+
+.food-unit {
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.food-kcal {
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* 删除按钮做小，但保持 24px 的可点区域 */
+.food-item .food-remove {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fdf1f1;
+  border: 1px solid rgba(231, 123, 123, 0.3);
+  color: #c25f5f;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* 餐次分区标题更紧凑 */
+.meal-group {
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+
+.meal-title {
+  margin-bottom: 4px;
+  font-size: 11.5px;
+}
+
+.meal-title em {
+  font-size: 10.5px;
+}
+
+.meal-empty {
+  font-size: 11.5px;
+}
+/* ============================================================================
+ * 饮食记录：食物条目改为自适应胶囊，横向排列自动换行
+ * ========================================================================== */
+
+.food-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 6px;
+}
+
+/* 宽度随内容自适应，不再撑满整行 */
+.food-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  max-width: 100%;
+  padding: 4px 7px 4px 9px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  font-size: 12px;
+}
+
+/* 名称最多占 110px，超长省略，避免单颗胶囊过宽 */
+.food-name {
+  flex: 0 1 auto;
+  max-width: 110px;
+  font-size: 12px;
+}
+
+.food-item .food-grams-edit {
+  flex: 0 0 38px;
+  width: 38px;
+  padding: 1px 3px;
+  border-radius: 5px;
+  font-size: 11px;
+}
+
+.food-unit {
+  flex: 0 0 auto;
+  margin-left: -2px;
+  font-size: 10px;
+}
+
+.food-kcal {
+  flex: 0 0 auto;
+  font-size: 10px;
+}
+
+/* 删除按钮缩小，但保持 22px 可点区域 */
+.food-item .food-remove {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  font-size: 12px;
+}
+/* ============================================================================
+ * 饮食记录：今日推荐食谱
+ * ========================================================================== */
+
+.recommend-card .recommend-line {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #2f8e8a;
+}
+
+.recommend-text {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+.recommend-meal {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f8fdfc;
+  border: 1px solid rgba(78, 197, 193, 0.16);
+}
+
+.recommend-meal-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.recommend-meal-head b {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.recommend-meal-head em {
+  font-style: normal;
+  font-size: 11.5px;
+  color: #2f8e8a;
+}
+
+.recommend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.recommend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  font-size: 11.5px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.recommend-macros {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.recommend-apply {
+  width: 100%;
+  margin: 2px 0 6px;
+}
+/* 食谱类型标签与推荐语 */
+.recommend-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #fff5ea;
+  border: 1px solid rgba(255, 211, 165, 0.85);
+  color: #b98149;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.recommend-name {
+  display: block;
+  margin: 2px 0 4px;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.recommend-say {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+/* 三餐卡片：左侧薄荷色条区分早 / 午 / 晚 */
+.recommend-meal {
+  position: relative;
+  padding-left: 14px;
+}
+
+.recommend-meal::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #4ec5c1, #a8d8ea);
+}
+/* ============================ 日历格子计划标签 ============================ */
+/* 格子里的日期：单独控制字号与行高 */
+.cal-cell .cal-day {
+  font-size: 12.5px;
+  line-height: 1;
+}
+
+/* 计划部位小标签（如「胸·三头」），休息日为「休」 */
+.cal-cell .cal-tag {
+  display: block;
+  max-width: calc(100% - 6px);
+  padding: 1px 4px;
+  border-radius: 6px;
+  background: var(--mint-soft);
+  color: #3f8f8a;
+  font-size: 8px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 休息日标签：浅灰，与训练日区分 */
+.cal-cell .cal-tag.is-rest {
+  background: #f2f4f6;
+  color: var(--muted);
+}
+
+/* ============================ 本周计划列表 ============================ */
+#week-plan .card {
+  margin-top: 0;
+}
+
+/* 每天一块：行按钮 + 可展开的详情 */
+.week-item {
+  border-bottom: 1px dashed var(--line);
+}
+
+.week-item:last-child {
+  border-bottom: none;
+}
+
+.week-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 4px;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.week-row:hover {
+  background: var(--mint-soft);
+}
+
+/* 展开中的那一行：薄荷底色 + 强调箭头 */
+.week-item.is-open .week-row {
+  background: var(--mint-soft);
+}
+
+.week-row:focus-visible {
+  outline: 2px solid rgba(78, 197, 193, 0.45);
+  outline-offset: 1px;
+}
+
+/* 休息日整行弱化，突出「恢复」 */
+.week-row.is-rest .week-focus,
+.week-row.is-rest .week-meta {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.week-day {
+  flex: 0 0 38px;
+  font-size: 12.5px;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+}
+
+.week-emoji {
+  flex: 0 0 22px;
+  text-align: center;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.week-focus {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.week-meta {
+  flex: 0 0 auto;
+  font-size: 11.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* 展开箭头：▸ 收起时 / ▾ 展开时（字符由 JS 切换） */
+.week-arrow {
+  flex: 0 0 auto;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--muted);
+  transition: color 0.18s;
+}
+
+.week-item.is-open .week-arrow {
+  color: var(--accent-strong);
+}
+
+/* 详情区：默认收起，is-open 时展开 */
+.week-detail {
+  display: none;
+  padding: 2px 4px 12px;
+}
+
+.week-detail[hidden] {
+  display: none;
+}
+
+.week-item.is-open .week-detail {
+  display: block;
+}
+
+/* 详情内的区块与动作列表：间距收紧，贴合列表卡片 */
+.week-detail .mini-block,
+.week-detail .exercise-list {
+  margin-top: 10px;
+}
+
+.week-detail .mini-block:first-child,
+.week-detail .exercise-list:first-child {
+  margin-top: 6px;
+}
+/* ============================ 首页吉祥物：透明 webp + 状态动画 ============================ */
+/* 透明背景直接呈现：不裁剪、不加底色；尺寸随视口自适应（桌面约放大 30%，手机端不挤压排版） */
+.avatar-stage {
+  overflow: visible;
+  border-radius: 0;
+  width: clamp(152px, 42vw, 188px);
+  height: auto;
+  aspect-ratio: 1 / 1;
+  align-self: center;
+}
+
+/* 窄屏再退一档，保证问候语与气泡有足够宽度 */
+@media (max-width: 380px) {
+  .avatar-stage {
+    width: 148px;
+  }
+}
+
+/* 动画全部挂在外层 wrap 上，img 只负责展示，避免同一元素叠加多个动画 */
+.mascot-wrap {
+  width: 100%;
+  height: 100%;
+  display: block;
+  animation: mascot-float 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.mascot-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: transparent;
+  border-radius: 0;
+  /* 透明素材加投影，浅色背景下有层次 */
+  filter: drop-shadow(0 8px 14px rgba(47, 62, 70, 0.16));
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* 待机：4s / 幅度 8px */
+.mascot-wrap--idle {
+  animation: mascot-float-idle 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+/* 轻松：2.2s / 幅度 12px */
+.mascot-wrap--happy {
+  animation: mascot-float-happy 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+/* 合适：3.2s / 幅度 10px（与基础规则一致，显式写出便于对照） */
+.mascot-wrap--ok {
+  animation: mascot-float 3.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+/* 太累：6s / 幅度 3px */
+.mascot-wrap--tired {
+  animation: mascot-float-tired 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+@keyframes mascot-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+
+  75% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+}
+
+@keyframes mascot-float-idle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-4px) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+
+  75% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+}
+
+@keyframes mascot-float-happy {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(0deg);
+  }
+
+  75% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+@keyframes mascot-float-tired {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-1.5px) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-3px) rotate(0deg);
+  }
+
+  75% {
+    transform: translateY(-1.5px) rotate(1deg);
+  }
+}
+
+/* 系统开启「减少动态效果」时停掉动画 */
+@media (prefers-reduced-motion: reduce) {
+  .mascot-wrap {
+    animation: none;
+  }
+}
+
+/* 问候区允许收缩，避免吉祥物放大后把卡片撑破 */
+.profile-greeting {
+  min-width: 0;
+}
+/* ============================ 日历最终定稿：紧凑 + 状态 emoji ============================ */
+/* 画幅：3:2 横向长方形、撑满卡片、间距 2px */
+#page-calendar .card {
+  padding: 9px;
+}
+
+#page-calendar .card-head,
+.calendar-head {
+  margin-bottom: 6px;
+}
+
+.calendar-head h2 {
+  font-size: 14px;
+}
+
+.calendar-head .muted {
+  font-size: 10px;
+}
+
+.calendar-grid {
+  gap: 2px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.cal-dow {
+  font-size: 9px;
+  padding: 1px 0;
+}
+
+.cal-cell {
+  aspect-ratio: 3 / 2;
+  border-radius: 5px;
+  padding: 1px 2px 2px;
+  gap: 1px;
+}
+
+/* 日期：日历里最醒目的信息 */
+.cal-cell .cal-day {
+  font-size: 13px;
+  font-weight: 800;
+  color: #16212a;
+  line-height: 1;
+}
+
+/* 部位动作 + 状态 emoji 同一行小字，无胶囊底色 */
+.cal-cell .cal-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  max-width: calc(100% - 2px);
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  font-size: 7.5px;
+  line-height: 1.2;
+  color: #5d7180;
+  overflow: hidden;
+}
+
+.cal-cell .cal-tag.is-rest {
+  background: transparent;
+  color: #9aa7b2;
+}
+
+.cal-cell .cal-plan-text {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-cell .cal-status {
+  position: static;
+  flex: 0 0 auto;
+  font-size: 9px;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.check-mark {
+  top: 1px;
+  right: 3px;
+  font-size: 8px;
+}
+
+#page-calendar .card > .hint {
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+/* 状态图例 */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 10px;
+  margin: 6px 0 10px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.calendar-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.calendar-legend .legend-emoji {
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* 饮食简记 */
+.diet-brief {
+  margin-top: 6px;
+}
+
+.diet-brief-sum {
+  margin: 0 0 4px;
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+}
+
+.diet-brief-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 3px;
+}
+
+.diet-brief-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.diet-brief-emoji {
+  flex: 0 0 auto;
+  font-size: 12px;
+}
+
+.diet-brief-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.diet-brief-kcal {
+  flex: 0 0 auto;
+  font-size: 10.5px;
+  color: var(--muted);
+}
+
+.diet-brief-empty {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* 本周计划展开区紧凑版 */
+.week-detail {
+  padding: 0 4px 8px;
+}
+
+.week-detail-meta {
+  margin: 0 0 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.week-detail .hint {
+  margin: 0;
+  font-size: 11px;
+}
+
+.ex-compact {
+  margin: 3px 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.ex-compact li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ex-compact-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.ex-compact-spec {
+  flex: 0 0 auto;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ex-compact-line {
+  margin: 2px 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.ex-compact-line b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.ex-compact-empty {
+  margin: 3px 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ============================ 首页与全站视觉定稿 ============================ */
+/* 首页纵向节奏 */
+#page-home .card {
+  margin-bottom: 12px;
+}
+
+#page-home > .card:last-of-type {
+  margin-bottom: 0;
+}
+
+#page-home .dash-list {
+  gap: 12px;
+  margin-top: 0;
+}
+
+/* 品牌区 */
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  font-size: 13.5px;
+}
+
+.brand-title {
+  font-size: 17px;
+  letter-spacing: 0.1px;
+}
+
+/* Hero：首次进入大标题；已有用户时压缩 */
+.hero h2 {
+  font-size: 24px;
+  letter-spacing: -0.4px;
+}
+
+#page-home:has(#home-profile:not([hidden])) .hero {
+  padding: 14px 16px;
+}
+
+#page-home:has(#home-profile:not([hidden])) .hero h2 {
+  margin: 6px 0 4px;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+#page-home:has(#home-profile:not([hidden])) .hero .flow {
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 11px;
+}
+
+#page-home:has(#home-profile:not([hidden])) .hero .flow span {
+  padding: 3px 7px;
+}
+
+/* 今日闭环 */
+.progress-head b {
+  font-size: 14px;
+  letter-spacing: -0.1px;
+}
+
+.progress-step {
+  min-height: 30px;
+}
+
+.progress-bar {
+  height: 7px;
+}
+
+/* 身材信息 */
+.profile-stat {
+  padding: 10px 12px;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.profile-stat b {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #1f7f79;
+}
+
+.profile-stat:focus-within {
+  border-color: rgba(78, 197, 193, 0.45);
+  background: #f2fbfa;
+}
+
+/* 快捷卡片 */
+.dash-card {
+  border-radius: 20px;
+  padding: 16px;
+}
+
+.dash-head b {
+  font-size: 15px;
+  letter-spacing: -0.1px;
+}
+
+.dash-emoji {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  font-size: 17px;
+  background: linear-gradient(135deg, #eafaf8, #eef7fc);
+}
+
+.dash-btn {
+  min-height: 44px;
+}
+
+/* 微交互：仅精确指针设备 */
+@media (hover: hover) and (pointer: fine) {
+  .card,
+  .dash-card {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .dash-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(47, 62, 70, 0.1);
+  }
+}
+
+/* 全站统一 */
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  letter-spacing: 0.2px;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.back-btn:not(.back-btn--float):focus-visible,
+.chip:focus-visible,
+.dash-btn:focus-visible {
+  outline: 2px solid rgba(78, 197, 193, 0.5);
+  outline-offset: 2px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  min-height: 46px;
+}
+
+.card {
+  padding: 16px;
+  margin-bottom: 14px;
+  border-radius: 20px;
+}
+
+.card-head h2,
+.card-head h3 {
+  letter-spacing: -0.2px;
+}
+
+.page-topbar {
+  margin-bottom: 10px;
+}
+
+.back-btn:not(.back-btn--float) {
+  min-height: 40px;
+  padding: 8px 16px;
+  background: #effaf9;
+  font-weight: 600;
+  transition: background 0.18s ease, transform 0.12s ease;
+}
+
+.back-btn:not(.back-btn--float):hover {
+  background: #e3f6f4;
+}
+
+.page-user-tag {
+  margin-bottom: 10px;
+  letter-spacing: 0.2px;
+}
+
+::selection {
+  background: rgba(78, 197, 193, 0.24);
+  color: #1f2a31;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media (max-width: 420px) {
+  #page-home .card {
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  #page-home .dash-list {
+    gap: 10px;
+  }
+
+  .dash-card {
+    padding: 14px;
+  }
+
+  .hero h2 {
+    font-size: 22px;
+  }
+
+  #page-home:has(#home-profile:not([hidden])) .hero h2 {
+    font-size: 17px;
+  }
+
+  .card {
+    padding: 15px;
+    margin-bottom: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    font-size: 14.5px;
+  }
+
+  .back-btn:not(.back-btn--float) {
+    padding: 7px 14px;
+    font-size: 12.5px;
+  }
+}
+/* ============================ 最终动效与细节 ============================ */
+
+/* 1. 首页卡片依次淡入 + 轻微上浮（每张错开 0.06s） */
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#page-home.is-active > .card,
+#page-home.is-active #home-profile > .card {
+  animation: card-rise 0.38s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+#page-home.is-active > .card:nth-child(1) { animation-delay: 0.02s; }
+#page-home.is-active > .card:nth-child(2) { animation-delay: 0.08s; }
+#page-home.is-active #home-profile > .card:nth-child(1) { animation-delay: 0.06s; }
+#page-home.is-active #home-profile > .card:nth-child(2) { animation-delay: 0.12s; }
+#page-home.is-active #home-profile > .card:nth-child(3) { animation-delay: 0.18s; }
+#page-home.is-active #home-profile > .card:nth-child(4) { animation-delay: 0.24s; }
+#page-home.is-active #home-profile > .card:nth-child(5) { animation-delay: 0.3s; }
+#page-home.is-active #home-profile > .card:nth-child(6) { animation-delay: 0.36s; }
+#page-home.is-active #home-profile > .card:nth-child(7) { animation-delay: 0.42s; }
+
+/* 2. 页面切换淡入 0.2s */
+.page {
+  animation-duration: 0.2s;
+}
+
+/* 3. 按钮手感：按下缩放 + 亮度微变（日历格子与导航不参与，避免网格抖动） */
+button {
+  transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.2s ease;
+}
+
+button:active:not(:disabled):not(.cal-cell):not(.tab) {
+  transform: scale(0.96);
+  filter: brightness(0.97);
+}
+
+/* 主按钮：薄荷 → 浅蓝渐变 + 柔和呼吸光晕 */
+.btn-primary {
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3fb0ac 0%, #4ec5c1 55%, #8fd0e8 100%);
+  animation: primary-breathe 2.8s ease-in-out infinite;
+}
+
+.btn-secondary {
+  border-radius: 999px;
+}
+
+@keyframes primary-breathe {
+  0%,
+  100% {
+    box-shadow: 0 8px 20px rgba(78, 197, 193, 0.24);
+  }
+
+  50% {
+    box-shadow: 0 10px 28px rgba(78, 197, 193, 0.42);
+  }
+}
+
+/* 4. 进度条：0 → 目标，0.6s 缓动生长 */
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.progress-bar i,
+.diet-progress i,
+.water-bar i {
+  transform-origin: left center;
+  animation: bar-grow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.diet-progress i {
+  background: linear-gradient(90deg, #4ec5c1, #a8d8ea);
+}
+
+/* 5. 日历：今天日期圆形主色高亮 + 白字（状态 emoji 保持不变） */
+.cal-cell.is-today {
+  border-color: rgba(78, 197, 193, 0.45);
+}
+
+.cal-cell.is-today .cal-day {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4ec5c1, #3fb0ac);
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(78, 197, 193, 0.35);
+}
+
+/* 6. 卡片标题前薄荷绿短竖条 */
+.card-head h2::before,
+.card-head h3::before,
+.dash-head b::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 13px;
+  margin-right: 6px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #4ec5c1, #a8d8ea);
+  vertical-align: -2px;
+}
+
+/* 7. 圆角统一：卡片 16px、按钮胶囊、图片 12px */
+.card {
+  border-radius: 16px;
+}
+
+.dash-card {
+  border-radius: 16px;
+}
+
+.photo-preview img,
+.diet-history-photo {
+  border-radius: 12px;
+}
+
+/* 8. 庆祝彩带：飘落动画纯 CSS，2 秒后由 JS 清理 */
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -8vh;
+  animation: confetti-fall 1.8s cubic-bezier(0.3, 0.7, 0.4, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(0, 112vh, 0) rotate(540deg);
+    opacity: 0;
+  }
+}
+
+/* 滚动中的数字等宽，避免跳动 */
+[data-count-to] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 减少动态效果：关闭入场 / 呼吸 / 进度条 / 彩带动画 */
+@media (prefers-reduced-motion: reduce) {
+  #page-home.is-active > .card,
+  #page-home.is-active #home-profile > .card,
+  .btn-primary,
+  .progress-bar i,
+  .diet-progress i,
+  .water-bar i,
+  .confetti-piece {
+    animation: none !important;
+  }
+}
+/* ============================ AI 感：调度可视化与个性化文案 ============================ */
+
+/* Agent 调度面板：生成方案时逐条出现 */
+.agent-trace {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f4fcfb, #f2f8fd);
+  border: 1px solid rgba(78, 197, 193, 0.22);
+  transition: opacity 0.4s ease;
+}
+
+.agent-trace[hidden] {
+  display: none;
+}
+
+.agent-trace.is-done {
+  opacity: 0;
+}
+
+@keyframes agent-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.agent-trace-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text);
+  animation: agent-step-in 0.3s ease both;
+}
+
+.agent-trace-item b {
+  flex: 0 0 auto;
+  color: #2f8e8a;
+  font-weight: 700;
+}
+
+.agent-trace-emoji {
+  flex: 0 0 auto;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* 答疑调整轨迹 */
+.agent-trace-inline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f4fcfb;
+  border-left: 3px solid #4ec5c1;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #3c5560;
+}
+
+.agent-trace-inline b {
+  color: #2f8e8a;
+}
+
+/* 个性化开场 / 结尾文案 */
+.persona-line {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f4fcfb, #f2f8fd);
+  border-left: 3px solid #4ec5c1;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #3c5560;
+}
+
+.persona-line.is-outro {
+  margin: 12px 0 0;
+  border-left-color: #a8d8ea;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-trace-item {
+    animation: none;
+  }
+}
