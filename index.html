@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FDFCF8">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="MintCoach 薄荷教练 · 6 Agent 多智能体健身应用">
+  <title>MintCoach 薄荷教练 · 多智能体健身教练</title>
+  <link rel="stylesheet" href="style.css?v=20261114t">
+  <!-- MediaPipe Pose：人体关键点检测（本地库，不依赖外部CDN） -->
+  <script src="libs/mediapipe/camera_utils.js"></script>
+  <script src="libs/mediapipe/pose.js"></script>
+</head>
+<body>
+  <!-- 顶部品牌区 + Tab 导航 -->
+  <header class="app-header">
+    <div class="brand container">
+      <span class="brand-logo">AI</span>
+      <div>
+        <h1 class="brand-title">MintCoach 薄荷教练</h1>
+        <p class="brand-sub">多智能体骨架 · 6 Agent</p>
+      </div>
+      <button type="button" class="user-entry" id="user-entry" aria-haspopup="dialog">
+        <span class="user-entry-avatar" id="user-entry-avatar">👤</span>
+        <span class="user-entry-name" id="user-entry-name">未选择用户</span>
+      </button>
+    </div>
+
+  </header>
+
+  <main class="container">
+    <!-- ==================== 首页：信息收集 + 方案生成 ==================== -->
+    <section class="page is-active" id="page-home" data-page="home">
+
+      <div class="hero card">
+        <span class="tag">🌿 CoachAgent · 总控</span>
+        <h2 id="home-hero-title">📝 请先告诉我你的情况</h2>
+
+        <div class="flow">
+          <span>📝 填写信息</span><i>→</i>
+          <span>📋 生成计划</span><i>→</i>
+          <span>✨ 查看方案</span><i>→</i>
+          <span>🏋️ 开始训练</span><i>→</i>
+          <span>🎯 打卡复盘</span>
+        </div>
+      </div>
+
+      <!-- Agent 调度可视化：生成方案时逐条出现 -->
+      <div class="agent-trace" id="agent-trace" hidden></div>
+
+      <!-- 已有当前用户时显示个人主页（由 main.js 渲染） -->
+      <div id="home-profile" class="home-profile" hidden></div>
+
+      <form class="card form" id="profile-form">
+        <div class="card-head">
+          <h3>📋 用户信息</h3>
+          <span class="badge badge-warn">必填</span>
+        </div>
+
+        <div class="field">
+          <label for="nickname">昵称</label>
+          <input id="nickname" name="nickname" type="text" autocomplete="nickname"
+            placeholder="例如：小明" required>
+          <p class="hint">昵称用于个人主页问候与多用户区分</p>
+        </div>
+
+        <div class="field">
+          <label for="goal">训练目标</label>
+          <select id="goal" name="goal" required>
+            <option value="lose_fat">减脂</option>
+            <option value="build_muscle">增肌</option>
+            <option value="body_shape">塑形</option>
+            <option value="endurance">提升体能</option>
+            <option value="health" selected>保持健康</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="height">身高（cm）</label>
+            <input id="height" name="height" type="number" min="120" max="230" step="1" value="170" required>
+          </div>
+          <div class="field">
+            <label for="weight">体重（kg）</label>
+            <input id="weight" name="weight" type="number" min="30" max="250" step="0.1" value="65" required>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="gender">性别</label>
+            <select id="gender" name="gender">
+              <option value="male">男</option>
+              <option value="female">女</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="age">年龄</label>
+            <input id="age" name="age" type="number" min="12" max="90" step="1" value="28">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>每周训练天数</label>
+          <div class="chips" id="days-chips">
+            <button type="button" class="chip" data-days="2">2 天</button>
+            <button type="button" class="chip is-active" data-days="3">3 天</button>
+            <button type="button" class="chip" data-days="4">4 天</button>
+            <button type="button" class="chip" data-days="5">5 天</button>
+            <button type="button" class="chip" data-days="6">6 天</button>
+          </div>
+          <input type="hidden" id="daysPerWeek" value="3">
+        </div>
+
+        <div class="field">
+          <label>可用器械（可多选）</label>
+          <div class="chips" id="equipment-chips">
+            <label class="chip chip-check">
+              <input type="checkbox" name="equipment" value="bodyweight" checked>
+              <span>徒手</span>
+            </label>
+            <label class="chip chip-check">
+              <input type="checkbox" name="equipment" value="dumbbell">
+              <span>哑铃</span>
+            </label>
+            <label class="chip chip-check">
+              <input type="checkbox" name="equipment" value="barbell">
+              <span>杠铃</span>
+            </label>
+            <label class="chip chip-check">
+              <input type="checkbox" name="equipment" value="machine">
+              <span>固定器械</span>
+            </label>
+            <label class="chip chip-check">
+              <input type="checkbox" name="equipment" value="band">
+              <span>弹力带</span>
+            </label>
+            <label class="chip chip-check">
+              <input type="checkbox" name="equipment" value="kettlebell">
+              <span>壶铃</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="injuries">伤病 / 身体限制（选填）</label>
+          <input id="injuries" name="injuries" type="text" placeholder="例如：右膝旧伤、腰椎间盘突出">
+          <p class="hint">多个限制用逗号分隔，训练 Agent 后续会据此规避高风险动作</p>
+        </div>
+
+        <button type="submit" class="btn-primary" id="generate-btn">✨ 生成我的方案</button>
+        <p class="hint center">方案由内置规则生成，可随时在「问问教练」中调整</p>
+      </form>
+
+      <!-- 总控 Agent 的汇总结果 -->
+      <div id="home-result" class="result" aria-live="polite">
+        <div class="card empty">
+          <p class="empty-title">还没有生成方案</p>
+          <p class="muted">填写上方信息并点击「生成我的方案」，总控 Agent 会调度训练计划 Agent 与营养饮食 Agent。</p>
+        </div>
+      </div>
+
+      <!-- 首页答疑对话框：接入答疑调整 Agent，可直接用自然语言调整方案 -->
+      <form class="card form" id="home-qa-form" data-answer="home-qa-answer">
+        <div class="card-head">
+          <h2>💬 问问教练</h2>
+          <span class="tag">QaAgent</span>
+        </div>
+        <div class="field">
+          <label for="home-qa-question">用一句话说明你的调整需求</label>
+          <textarea id="home-qa-question" rows="2"
+            placeholder="例如：膝盖不好，把深蹲换掉 / 只有哑铃，在家练 / 一周改成 2 天 / 食谱换点花样"></textarea>
+        </div>
+        <button type="submit" class="btn-secondary">发送给答疑 Agent</button>
+        <div id="home-qa-answer" class="qa-answer"></div>
+      </form>
+    </section>
+
+    <!-- ==================== 训练模式 ==================== -->
+    <section class="page" id="page-training" data-page="training">
+      <!-- 训练全屏沉浸式：左上角小返回图标，不遮挡画面 -->
+      <button type="button" class="back-btn back-btn--float" data-back-home aria-label="返回首页">←</button>
+
+      <!-- 当前用户标签：由 main.js 填充 -->
+      <p class="page-user-tag" id="tag-training" hidden></p>
+
+      <!-- 训练模式切换 -->
+      <div class="card mode-switch-card">
+        <div class="mode-switch" id="training-mode-switch">
+          <button type="button" class="chip is-active" data-training-mode="free">自由训练</button>
+          <button type="button" class="chip" data-training-mode="plan">计划训练</button>
+        </div>
+        <p class="hint" id="training-mode-hint">自由训练：手动选择动作并开始评测。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>🎯 今日训练</h2>
+          <span class="tag">TrainingAgent</span>
+        </div>
+        <div id="today-training">
+          <!-- 未生成计划时由 main.js 渲染统一空状态引导 -->
+          <div class="empty-guide">
+            <p class="empty-guide-title">请先在首页生成训练计划</p>
+            <p class="muted">填写目标与身体信息后，训练 Agent 会生成一周计划，这里会自动读取今天的安排。</p>
+            <button type="button" class="btn-secondary" data-go-home>去首页生成</button>
+          </div>
+        </div>
+
+        <!-- 计划训练控制：切到「计划训练」后显示 -->
+        <div class="trainer-panel" id="plan-training-panel" hidden>
+          <div class="trainer-status" id="trainer-status">
+            点击「开始今日训练」，会按计划逐组引导并自动计数。
+          </div>
+
+          <div class="trainer-actions">
+            <button type="button" class="btn-primary" id="trainer-start">开始今日训练</button>
+            <button type="button" class="btn-secondary" id="trainer-stop" hidden>停止训练</button>
+          </div>
+
+          <div class="trainer-progress" id="trainer-progress" hidden>
+            <div class="trainer-row">
+              <span>当前动作</span><b id="trainer-exercise">--</b>
+            </div>
+            <div class="trainer-row">
+              <span>动作进度</span><b id="trainer-exercise-index">--</b>
+            </div>
+            <div class="trainer-row">
+              <span>组数</span><b id="trainer-set">--</b>
+            </div>
+            <div class="trainer-row">
+              <span>计数</span><b id="trainer-reps" class="is-reps">--</b>
+            </div>
+            <div class="trainer-row">
+              <span>休息</span><b id="trainer-rest">--</b>
+            </div>
+          </div>
+
+          <button type="button" class="btn-secondary" id="trainer-complete-set" hidden>
+            完成本组（手动）
+          </button>
+        </div>
+      </div>
+
+      <div class="card posture-card">
+        <div class="card-head">
+          <h2>🦾 姿势评测</h2>
+          <span class="tag">PostureAgent</span>
+        </div>
+
+        <!-- 自由训练面板：手动选动作 -->
+        <div id="free-training-panel">
+          <p class="muted">选择动作后站到镜头前，尽量让全身进入画面。首次启动需要加载人体姿态模型，请稍候。</p>
+
+          <div class="exercise-picker" id="exercise-picker">
+            <button type="button" class="chip is-active" data-exercise="squat">深蹲</button>
+            <button type="button" class="chip" data-exercise="pushup">俯卧撑</button>
+            <button type="button" class="chip" data-exercise="lunge">弓步蹲</button>
+            <button type="button" class="chip" data-exercise="jumping_jack">开合跳</button>
+            <button type="button" class="chip" data-exercise="plank">平板支撑</button>
+            <button type="button" class="chip" data-exercise="biceps_curl">哑铃弯举</button>
+            <button type="button" class="chip" data-exercise="shoulder_press">肩上推举</button>
+            <button type="button" class="chip" data-exercise="lateral_raise">侧平举</button>
+            <button type="button" class="chip" data-exercise="high_knees">高抬腿</button>
+          </div>
+          <p class="hint" id="posture-exercise-hint">站立 → 蹲下 → 站起</p>
+        </div>
+
+        <!-- 计划训练提示 -->
+        <p class="hint" id="plan-training-hint" hidden>
+          计划训练：动作由今日计划自动切换，请跟随语音提示；摄像头会在开始时自动启动。
+        </p>
+
+        <!-- 视频与骨架叠加层 -->
+        <div class="posture-stage">
+          <video id="posture-video" playsinline muted autoplay></video>
+          <canvas id="posture-canvas" width="640" height="480"></canvas>
+          <div class="posture-overlay">
+            <span class="posture-badge" id="posture-status">未开始</span>
+            <span class="posture-count" id="posture-count">关键点 0 / 33</span>
+            <span class="posture-count" id="posture-reps">计数 0 次</span>
+          </div>
+          <div class="posture-placeholder" id="posture-placeholder">
+            点击下方「开始训练」启动摄像头
+          </div>
+
+          <!-- 纠正弹窗：当前动作的正确姿势 SVG + 文案 -->
+          <div class="posture-alert" id="posture-alert" hidden>
+            <div class="posture-alert-card">
+              <canvas class="posture-alert-canvas" id="posture-alert-canvas"
+                width="320" height="380"></canvas>
+              <p id="posture-alert-text">注意动作姿势</p>
+              <button type="button" class="icon-btn posture-alert-close"
+                id="posture-alert-close" aria-label="关闭">×</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 自由模式的摄像头按钮 -->
+        <div class="posture-actions" id="posture-actions">
+          <button type="button" class="btn-primary" id="posture-start">开始训练</button>
+          <button type="button" class="btn-secondary" id="posture-stop" hidden>停止</button>
+        </div>
+
+        <ul class="checklist" id="posture-capabilities"></ul>
+        <p class="hint">
+          摄像头需要浏览器授权。若提示无法启动，请通过本地 HTTP 服务打开页面
+          （如 python -m http.server）；file:// 下部分浏览器会拦截摄像头。
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== 打卡复盘 ==================== -->
+    <section class="page" id="page-review" data-page="review">
+      <div class="page-topbar">
+        <button type="button" class="back-btn" data-back-home>← 返回首页</button>
+      </div>
+
+      <!-- 当前用户标签：由 main.js 填充 -->
+      <p class="page-user-tag" id="tag-review" hidden></p>
+
+      <!-- 今日闭环完成横幅：完成打卡后显示 -->
+      <div id="review-complete" class="review-complete" hidden></div>
+
+      <!-- 未生成计划时的空状态引导（由 main.js 控制显隐） -->
+      <div id="review-guide" hidden></div>
+
+      <!-- 今日打卡入口：点击弹出感受自评 -->
+      <div class="card checkin-entry">
+        <div class="card-head">
+          <div>
+            <h2>✅ 今日打卡</h2>
+            <p class="muted" id="checkin-status">还没有记录，花 10 秒记下今天的训练感受。</p>
+          </div>
+          <span class="tag">ReviewAgent</span>
+        </div>
+        <button type="button" class="btn-primary" id="open-checkin">记录今日打卡</button>
+      </div>
+
+      <!-- 打卡历史列表 -->
+      <div class="card">
+        <div class="card-head">
+          <h2>📊 打卡历史</h2>
+          <span class="badge" id="checkin-count">0 条</span>
+        </div>
+        <div id="checkin-history"></div>
+      </div>
+
+
+      <!-- 复盘报告 -->
+      <div id="review-result">
+        <div class="card empty">
+          <p class="empty-title">还没有复盘记录</p>
+          <p class="muted">完成一次今日打卡后，复盘 Agent 会给出报告和明日强度建议。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 饮食记录（独立二级页） ==================== -->
+    <section class="page" id="page-diet" data-page="diet">
+      <div class="page-topbar">
+        <button type="button" class="back-btn" data-back-home>← 返回首页</button>
+      </div>
+
+      <!-- 当前用户标签：由 main.js 填充 -->
+      <p class="page-user-tag" id="tag-diet" hidden></p>
+
+      <!-- 饮食记录：搜索食物 + 分量 + 实时汇总 + 目标对照 -->
+      <div class="card" id="diet-card">
+        <div class="card-head">
+          <h2>🥗 饮食记录</h2>
+          <span class="tag">热量与营养</span>
+        </div>
+
+        <!-- 今日推荐食谱：按训练情况自动搭配 -->
+        <div id="diet-recommend"></div>
+
+        <!-- 今日目标对照：已吃 / 还剩额度 -->
+        <div id="diet-intake-status" class="intake-status"></div>
+
+        <!-- 喝水记录：点一次 +250ml -->
+        <div id="diet-water"></div>
+
+        <!-- 餐次选择：先选餐次，再选食物与分量 -->
+        <div id="diet-meal-tabs" class="meal-tabs"></div>
+
+        <div class="field">
+          <label for="food-search">搜索食物</label>
+          <input id="food-search" type="search" autocomplete="off"
+            placeholder="搜索食物，如 鸡胸肉、米饭、西红柿">
+          <div id="food-search-results" class="food-search-results" role="listbox"></div>
+          <p class="hint" id="food-search-hint">点选食物后填写分量（克），一顿饭可添加多种</p>
+        </div>
+
+        <!-- 选中食物后的分量输入 -->
+        <div class="food-add-row">
+          <span class="food-picked" id="food-picked">未选择食物</span>
+          <input id="food-grams" class="food-grams-input" type="text" inputmode="decimal"
+            autocomplete="off" placeholder="克数，如 150">
+          <button type="button" class="btn-secondary food-add-btn" id="add-food">添加</button>
+        </div>
+
+        <!-- 草稿列表、汇总与照片预览 -->
+        <div id="diet-draft"></div>
+
+        <div class="field">
+          <label for="diet-note">饮食备注（选填）</label>
+          <input id="diet-note" type="text" autocomplete="off" placeholder="例如：外食，主食偏多">
+        </div>
+
+        <!-- 拍照 / 相册：仅作为这条饮食记录的配图 -->
+        <div class="photo-block">
+          <label class="photo-label" for="diet-photo">
+            <span class="photo-icon" aria-hidden="true">+</span>
+            <span>拍照记录（可选）</span>
+          </label>
+          <input id="diet-photo" type="file" accept="image/*" capture="environment" hidden>
+          <p class="hint">照片仅作为这条饮食记录的配图保存，不参与热量计算</p>
+        </div>
+
+        <button type="button" class="btn-primary" id="save-diet">保存饮食记录</button>
+      </div>
+
+      <!-- 下一餐智能建议：记录完一餐后自动出现 -->
+      <div id="diet-suggestion"></div>
+
+      <!-- 每日饮食报告：可生成、可回看历史 -->
+      <div class="card" id="diet-report-card">
+        <div class="card-head">
+          <h2>📋 今日饮食报告</h2>
+          <span class="tag">营养师点评</span>
+        </div>
+        <button type="button" class="btn-primary" id="generate-diet-report">生成今日饮食报告</button>
+        <div id="diet-report"></div>
+        <div id="diet-report-history"></div>
+      </div>
+
+      <!-- 饮食历史：按日期查看历史记录（配图与食物列表一起显示） -->
+      <div class="card" id="diet-history-card">
+        <div class="card-head">
+          <h2>🍱 饮食历史</h2>
+          <span class="badge" id="diet-history-count">0 条</span>
+        </div>
+        <div id="diet-history"></div>
+      </div>
+    </section>
+
+    <!-- ==================== 训练日历 ==================== -->
+    <section class="page" id="page-calendar" data-page="calendar">
+      <div class="page-topbar">
+        <button type="button" class="back-btn" data-back-home>← 返回首页</button>
+      </div>
+
+      <!-- 当前用户标签：由 main.js 填充 -->
+      <p class="page-user-tag" id="tag-calendar" hidden></p>
+
+      <div class="card">
+        <div class="calendar-head">
+          <h2 id="calendar-title">📅 训练日历</h2>
+          <span class="muted">打勾为已打卡，点击查看安排</span>
+        </div>
+        <div class="calendar-grid" id="calendar-grid"></div>
+        <p class="hint">打勾表示当天已打卡；点击任意日期，可查看当天的训练计划与打卡记录。</p>
+      </div>
+
+      <!-- 状态 emoji 图例：由 main.js 填充 -->
+      <div class="calendar-legend" id="calendar-legend"></div>
+
+      <!-- 本周计划列表：周一 ~ 周日（内容由 main.js 渲染，自带卡片） -->
+      <div id="week-plan"></div>
+
+      <!-- 点击日期后的详情 -->
+      <div id="calendar-detail"></div>
+    </section>
+
+    <!-- ==================== 健康科普 ==================== -->
+    <section class="page" id="page-science" data-page="science">
+      <div class="page-topbar">
+        <button type="button" class="back-btn" data-back-home>← 返回首页</button>
+      </div>
+
+      <!-- 今日科普：按日期自动切换，可手动换一篇 -->
+      <div class="card">
+        <div class="card-head">
+          <h2>📚 健康科普</h2>
+          <span class="badge" id="science-date">今日科普 · --</span>
+        </div>
+        <div id="today-article" class="article-list"></div>
+        <button type="button" class="btn-secondary" id="shuffle-article">🔄 换一篇</button>
+      </div>
+
+      <!-- 健康小测试：默认只显示引导，点击开始后逐题作答 -->
+      <div class="card">
+        <div class="card-head">
+          <h2>🧠 健康小测试</h2>
+          <span class="tag">3 题 · 约 1 分钟</span>
+        </div>
+
+        <!-- 初始引导：鼓励语 + 开始按钮 -->
+        <div id="quiz-intro">
+          <p class="quiz-lead">每天 3 道题，健康知识涨一点 📈</p>
+          <button type="button" class="btn-primary" id="quiz-start">开始测试</button>
+        </div>
+
+        <!-- 逐题作答区：选完立即显示解析 -->
+        <div id="quiz-area" hidden>
+          <p class="quiz-progress" id="quiz-progress"></p>
+          <div id="quiz-questions"></div>
+          <div id="quiz-feedback" class="quiz-feedback" hidden></div>
+          <button type="button" class="btn-primary" id="quiz-next" hidden>下一题</button>
+        </div>
+
+        <!-- 结果与再来一次 -->
+        <div id="quiz-result" class="quiz-result" hidden></div>
+      </div>
+
+      <form class="card form" id="qa-form" data-answer="qa-answer">
+        <div class="card-head">
+          <h2>💬 问问教练</h2>
+          <span class="tag">QaAgent</span>
+        </div>
+        <div class="field">
+          <label for="qa-question">你的问题</label>
+          <textarea id="qa-question" rows="3" placeholder="例如：这周太忙只练了两天，计划要怎么调？" required></textarea>
+        </div>
+        <button type="submit" class="btn-secondary">发送给答疑 Agent</button>
+        <div id="qa-answer" class="qa-answer"></div>
+      </form>
+    </section>
+
+    <!-- ==================== 关于 ==================== -->
+    <section class="page" id="page-about" data-page="about">
+      <div class="page-topbar">
+        <button type="button" class="back-btn" data-back-home>← 返回首页</button>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>ℹ️ 关于本项目</h2>
+          <span class="badge" id="about-version">v0.1.0</span>
+        </div>
+        <p class="muted">
+          MintCoach（薄荷教练）是一个多智能体健身应用：填写信息生成训练与营养方案，训练时实时评测姿势并语音报数，
+          训练后可打卡复盘、记录饮食。
+        </p>
+        <p class="about-team"><b>团队名称：</b>彰理峰高</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>👥 成员分工</h2>
+          <span class="tag">Roles</span>
+        </div>
+        <ul class="about-list">
+          <li><b>产品与交互</b><span>需求拆解、页面结构与交互流程设计</span></li>
+          <li><b>训练与营养</b><span>训练计划生成、营养方案与食物营养库</span></li>
+          <li><b>姿势评测</b><span>MediaPipe Pose 接入、动作计数与语音纠错</span></li>
+          <li><b>前端与体验</b><span>页面渲染、移动端适配、本地存储与测试文档</span></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>🧭 使用说明</h2>
+          <span class="tag">Guide</span>
+        </div>
+        <ol class="about-steps">
+          <li><b>填写信息</b>：在首页填写目标、身高体重、每周训练天数、器械与伤病情况。</li>
+          <li><b>生成计划</b>：点击「生成我的方案」，总控 Agent 会调度训练与营养 Agent。</li>
+          <li><b>开始训练</b>：进入「训练模式」，选择自由训练或计划训练，打开摄像头开始评测。</li>
+          <li><b>记录饮食</b>：在「打卡复盘」页搜索食物、填写分量，保存当天饮食记录。</li>
+          <li><b>查看复盘</b>：完成打卡后，复盘 Agent 会给出报告与次日强度建议。</li>
+        </ol>
+        <p class="hint">启动方式：node server.js，浏览器访问 http://localhost:8000。</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h2>⚠️ 免责声明</h2>
+          <span class="tag">Disclaimer</span>
+        </div>
+        <p class="about-disclaimer">
+          本应用仅用于学习与健身辅助参考，不构成医疗、营养或康复建议。训练计划与营养数据由内置规则生成，
+          存在个体差异，请结合自身情况调整。
+        </p>
+        <p class="about-disclaimer">
+          开始训练前请评估自身健康状况；如有伤病、慢性疾病或处于孕期，请先咨询医生或专业教练。
+          因使用本应用导致的运动损伤或其他损失，开发者不承担责任。
+        </p>
+        <p class="hint">所有数据保存在浏览器本地，不会上传到服务器。</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 今日打卡弹层：感受自评 + 训练数据 -->
+  <div class="modal" id="checkin-modal" aria-hidden="true">
+    <div class="modal-mask" data-close-checkin></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="checkin-title">
+      <div class="modal-head">
+        <h2 id="checkin-title">✅ 今日打卡</h2>
+        <button type="button" class="icon-btn" data-close-checkin aria-label="关闭">×</button>
+      </div>
+
+      <form id="checkin-form" class="form">
+        <div class="field">
+          <label>训练感受自评</label>
+          <div class="chips" id="feeling-chips">
+            <button type="button" class="chip" data-feeling="easy">轻松</button>
+            <button type="button" class="chip is-active" data-feeling="ok">合适</button>
+            <button type="button" class="chip" data-feeling="tired">太累</button>
+          </div>
+          <textarea id="checkin-note" rows="2" placeholder="训练感受备注：比如腿部有点酸、睡眠一般"></textarea>
+          <p class="hint">复盘 Agent 会结合最近打卡判断明日强度</p>
+        </div>
+
+        <div class="field">
+          <label for="completion-rate">训练完成率 <output id="completion-output">100%</output></label>
+          <input id="completion-rate" type="range" min="0" max="100" step="10" value="100">
+        </div>
+
+        <div class="field">
+          <label for="rpe">主观强度 RPE（1-10） <output id="rpe-output">6</output></label>
+          <input id="rpe" type="range" min="1" max="10" step="1" value="6">
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="sleep-hours">睡眠（小时）</label>
+            <input id="sleep-hours" type="number" min="0" max="16" step="0.5" value="7.5">
+          </div>
+          <div class="field">
+            <label for="body-weight">今日体重（kg，选填）</label>
+            <input id="body-weight" type="text" inputmode="decimal" autocomplete="off" placeholder="手动输入，如 65.5">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">保存打卡</button>
+        <p class="hint center">数据保存在浏览器本地，刷新不会丢失</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- 首次使用引导：三步上手，关闭后写入 localStorage，不再自动弹出 -->
+  <div class="modal" id="intro-modal" aria-hidden="true">
+    <div class="modal-mask" data-close-intro></div>
+    <div class="modal-panel intro-panel" role="dialog" aria-modal="true" aria-labelledby="intro-title">
+      <div class="modal-head">
+        <h2 id="intro-title">👋 欢迎使用 MintCoach 薄荷教练</h2>
+        <button type="button" class="icon-btn" data-close-intro aria-label="关闭">×</button>
+      </div>
+
+      <ol class="intro-steps">
+        <li>
+          <span class="intro-index" aria-hidden="true">①</span>
+          <div><b>填写信息</b><p>在首页填写目标、身高体重、训练天数、器械与伤病情况。</p></div>
+        </li>
+        <li>
+          <span class="intro-index" aria-hidden="true">②</span>
+          <div><b>生成计划</b><p>点击「生成我的方案」，得到一周训练计划与每日营养目标。</p></div>
+        </li>
+        <li>
+          <span class="intro-index" aria-hidden="true">③</span>
+          <div><b>开始训练 / 记录饮食</b><p>训练模式实时评测并语音报数；打卡复盘页记录饮食与训练感受。</p></div>
+        </li>
+      </ol>
+
+      <button type="button" class="btn-primary" data-close-intro>开始使用</button>
+      <p class="hint center">引导只显示一次，可随时在「关于」页查看使用说明</p>
+    </div>
+  </div>
+
+  <!-- 用户切换弹层：切换已保存用户 / 添加新用户 -->
+  <div class="modal" id="user-modal" aria-hidden="true">
+    <div class="modal-mask" data-close-user></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="user-modal-title">
+      <div class="modal-head">
+        <h2 id="user-modal-title">👤 切换用户</h2>
+        <button type="button" class="icon-btn" data-close-user aria-label="关闭">×</button>
+      </div>
+
+      <div id="user-list" class="user-list"></div>
+      <button type="button" class="btn-secondary" id="add-user-btn">＋ 添加新用户</button>
+      <p class="hint center">切换用户不会删除任何人的数据</p>
+    </div>
+  </div>
+
+  <!-- 训练完成提示：引导去查看复盘报告 -->
+  <div class="modal" id="training-complete-modal" aria-hidden="true">
+    <div class="modal-mask" data-close-complete></div>
+    <div class="modal-panel complete-panel" role="dialog" aria-modal="true"
+      aria-labelledby="complete-title">
+      <div class="modal-head">
+        <h2 id="complete-title">训练完成！🎉</h2>
+        <button type="button" class="icon-btn" data-close-complete aria-label="关闭">×</button>
+      </div>
+      <p class="complete-text">
+        今天的训练已经写入打卡，去复盘看看今天的状态和明日强度建议吧。
+      </p>
+      <button type="button" class="btn-primary" data-go-review>去查看复盘报告</button>
+      <button type="button" class="btn-secondary" data-close-complete>稍后再说</button>
+    </div>
+  </div>
+
+  <!-- 训练前安全提示：自由训练与计划训练都会先弹出 -->
+  <div class="modal" id="training-safety-modal" aria-hidden="true">
+    <div class="modal-mask" data-close-safety></div>
+    <div class="modal-panel safety-panel" role="dialog" aria-modal="true"
+      aria-labelledby="safety-title">
+      <div class="modal-head">
+        <h2 id="safety-title">⚠️ 开始前，先看一眼安全提示</h2>
+        <button type="button" class="icon-btn" data-close-safety aria-label="关闭">×</button>
+      </div>
+
+      <ul class="safety-list">
+        <li>
+          <b>⚠️ 身体状况</b>
+          <span>有心脏病、高血压、严重关节伤病等情况，请先咨询医生再训练。</span>
+        </li>
+        <li>
+          <b>🏠 环境检查</b>
+          <span>训练空间开阔无障碍、地面防滑，穿好运动鞋和运动服。</span>
+        </li>
+        <li>
+          <b>🧘 先热身</b>
+          <span>跟随计划中的热身动作，充分活动关节，避免受伤。</span>
+        </li>
+        <li>
+          <b>🚨 量力而行</b>
+          <span>训练中出现头晕、胸闷、关节剧痛，请立即停止。</span>
+        </li>
+        <li>
+          <b>📋 免责说明</b>
+          <span>本应用建议仅供参考，不构成医疗建议。</span>
+        </li>
+      </ul>
+
+      <label class="safety-remember">
+        <input type="checkbox" id="safety-remember">
+        <span>记住我的确认，下次不再显示</span>
+      </label>
+
+      <button type="button" class="btn-primary" id="safety-confirm">我已了解，开始训练</button>
+      <button type="button" class="btn-secondary" data-close-safety>取消</button>
+    </div>
+  </div>
+
+  <footer class="container footer">
+    <p>MintCoach 薄荷教练 v0.1.0</p>
+    <p class="muted">数据保存在浏览器本地，不会上传服务器</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- 庆祝彩带容器：由 main.js 在打卡 / 训练完成时填充 -->
+  <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+
+  <!-- 加载顺序：契约 → 存储 → 子 Agent → 总控 → 页面逻辑 -->
+  <script src="agents/contract.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="agents/trainingAgent.js"></script>
+  <script src="agents/dietAgent.js"></script>
+  <script src="agents/postureAgent.js"></script>
+  <script src="agents/reviewAgent.js"></script>
+  <script src="agents/qaAgent.js"></script>
+  <script src="agents/coachAgent.js"></script>
+  <script src="js/posture.js"></script>
+  <script src="js/trainer.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
